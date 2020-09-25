@@ -5,7 +5,8 @@ import {
   Text,
   View,
   Animated,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import ActionButtonItem from "./ActionButtonItem";
 import {
@@ -116,11 +117,11 @@ const ActionButton = props => {
     const parentStyle =
       isAndroid && props.fixNativeFeedbackRadius
         ? {
-            right: props.offsetX,
-            zIndex: props.zIndex,
-            borderRadius: props.size / 2,
-            width: props.size
-          }
+          right: props.offsetX,
+          zIndex: props.zIndex,
+          borderRadius: props.size / 2,
+          width: props.size
+        }
         : { marginHorizontal: props.offsetX, zIndex: props.zIndex };
 
     return (
@@ -240,7 +241,7 @@ const ActionButton = props => {
     return (
       <TouchableOpacity
         activeOpacity={1}
-        style={getOverlayStyles()}
+        style={styles.backdrop}
         onPress={reset}
       />
     );
@@ -372,9 +373,9 @@ ActionButton.defaultProps = {
   spacing: 20,
   outRangeScale: 1,
   autoInactive: true,
-  onPress: () => {},
-  onPressIn: () => {},
-  onPressOn: () => {},
+  onPress: () => { },
+  onPressIn: () => { },
+  onPressOn: () => { },
   backdrop: false,
   degrees: 45,
   position: "right",
@@ -392,6 +393,8 @@ ActionButton.defaultProps = {
   accessible: undefined
 };
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   overlay: {
     position: "absolute",
@@ -405,6 +408,12 @@ const styles = StyleSheet.create({
     marginTop: -4,
     fontSize: 24,
     backgroundColor: "transparent"
+  },
+  backdrop: {
+    height: windowHeight,
+    width: windowWidth,
+    position: 'absolute',
+    bottom: 0,
   }
 });
 export default ActionButton;
