@@ -34,8 +34,7 @@ export default class ActionButtonItem extends Component {
       useNativeFeedback: true,
       activeOpacity: DEFAULT_ACTIVE_OPACITY,
       fixNativeFeedbackRadius: false,
-      nativeFeedbackRippleColor: "rgba(255,255,255,0.75)",
-      numberOfLines: 1,
+      nativeFeedbackRippleColor: "rgba(255,255,255,0.75)"
     };
   }
 
@@ -45,8 +44,7 @@ export default class ActionButtonItem extends Component {
       useNativeFeedback: PropTypes.bool,
       fixNativeFeedbackRadius: PropTypes.bool,
       nativeFeedbackRippleColor: PropTypes.string,
-      activeOpacity: PropTypes.number,
-      numberOfLines: PropTypes.number,
+      activeOpacity: PropTypes.number
     };
   }
 
@@ -56,7 +54,11 @@ export default class ActionButtonItem extends Component {
       position,
       verticalOrientation,
       hideShadow,
-      spacing
+      spacing,
+      outputX,
+      inputX,
+      outputY,
+      inputY,
     } = this.props;
 
     if (!this.props.active) return null;
@@ -70,10 +72,16 @@ export default class ActionButtonItem extends Component {
       transform: [
         {
           translateY: this.props.anim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [verticalOrientation === "down" ? -40 : 40, 0]
-          })
-        }
+            inputRange: inputY ? inputY : [0, 0],
+            outputRange: outputY ? outputY : [0, 80],
+          }),
+        },
+        {
+          translateX: this.props.anim.interpolate({
+            inputRange: inputX ? inputX : [0, 1],
+            outputRange: outputX ? outputX : [0, -120],
+          }),
+        },
       ]
     };
 
@@ -94,15 +102,15 @@ export default class ActionButtonItem extends Component {
     const parentStyle = isAndroid &&
       this.props.fixNativeFeedbackRadius
       ? {
-          height: size,
-          marginBottom: spacing,
-          right: this.props.offsetX,
-          borderRadius: this.props.size / 2
-        }
+        height: size,
+        marginBottom: spacing,
+        right: this.props.offsetX,
+        borderRadius: this.props.size / 2
+      }
       : {
-          paddingHorizontal: this.props.offsetX,
-          height: size + SHADOW_SPACE + spacing
-        };
+        paddingHorizontal: this.props.offsetX,
+        height: size + SHADOW_SPACE + spacing
+      };
     return (
       <Animated.View
         pointerEvents="box-none"
@@ -110,7 +118,6 @@ export default class ActionButtonItem extends Component {
       >
         <View>
           <Touchable
-            rejectResponderTermination
             testID={this.props.testID}
             accessibilityLabel={this.props.accessibilityLabel}
             background={touchableBackground(
@@ -122,7 +129,7 @@ export default class ActionButtonItem extends Component {
           >
             <View style={[
               buttonStyle,
-              !hideShadow ? {...shadowStyle, ...this.props.shadowStyle} : null
+              !hideShadow ? { ...shadowStyle, ...this.props.shadowStyle } : null
             ]}>
               {this.props.children}
             </View>
@@ -143,8 +150,7 @@ export default class ActionButtonItem extends Component {
       parentSize,
       size,
       position,
-      spaceBetween,
-      numberOfLines,
+      spaceBetween
     } = this.props;
     const offsetTop = Math.max(size / 2 - TEXT_HEIGHT / 2, 0);
     const positionStyles = { top: offsetTop };
@@ -169,20 +175,18 @@ export default class ActionButtonItem extends Component {
     const title = (
       React.isValidElement(this.props.title) ?
         this.props.title
-      : (
-        <Text
-          allowFontScaling={false}
-          style={[styles.text, this.props.textStyle]}
-          numberOfLines={numberOfLines}
-        >
-          {this.props.title}
-        </Text>
-      )
+        : (
+          <Text
+            allowFontScaling={false}
+            style={[styles.text, this.props.textStyle]}
+          >
+            {this.props.title}
+          </Text>
+        )
     )
 
     return (
       <TextTouchable
-        rejectResponderTermination
         background={touchableBackground(
           this.props.nativeFeedbackRippleColor,
           this.props.fixNativeFeedbackRadius
@@ -197,6 +201,7 @@ export default class ActionButtonItem extends Component {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   textContainer: {
