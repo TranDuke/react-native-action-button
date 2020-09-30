@@ -66,7 +66,6 @@ export default class ActionButtonItem extends Component {
     const animatedViewStyle = {
       marginBottom: -SHADOW_SPACE,
       alignItems: alignItemsMap[position],
-      useNativeDrive: true,
       // backgroundColor: this.props.buttonColor,
       opacity: this.props.anim,
       transform: [
