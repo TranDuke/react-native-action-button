@@ -36,7 +36,7 @@ const ActionButton = props => {
 
   useEffect(() => {
     if (props.active) {
-      Animated.spring(anim.current, { toValue: 1 }).start();
+      Animated.spring(anim.current, { toValue: 1, useNativeDriver: true }).start();
       setActive(true);
       setResetToken(props.resetToken);
     } else {
@@ -79,6 +79,7 @@ const ActionButton = props => {
 
   const _renderMainButton = () => {
     const animatedViewStyle = {
+      useNativeDriver: true,
       transform: [
         {
           scale: anim.current.interpolate({
@@ -255,7 +256,7 @@ const ActionButton = props => {
     if (active) return reset(animate);
 
     if (animate) {
-      Animated.spring(anim.current, { toValue: 1 }).start();
+      Animated.spring(anim.current, { toValue: 1, useNativeDriver: true }).start();
     } else {
       anim.current.setValue(1);
     }
